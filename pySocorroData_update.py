@@ -14,6 +14,9 @@ def process_json(i):
     today = date.today()-timedelta(days=i)
     url = 'https://crash-stats.mozilla.com/api/SuperSearch/?proto_signature=gfx&_columns=build_id&_columns=cpu_arch&_columns=startup_crash&_columns=graphics_critical_error&_columns=graphics_startup_test&_columns=install_time&_columns=last_crash&_columns=safe_mode&_columns=release_channel&_columns=process_type&_columns=contains_memory_report&_columns=moz_crash_reason&_columns=date&_columns=product&_columns=version&_columns=platform_pretty_version&_columns=uuid&_columns=signature&_columns=proto_signature&_columns=app_notes&_columns=uptime&_columns=shutdown_progress&date=%3E%3D' + str(yesterday) + '&date=<' + str(today) + '&_results_number=1000&_results_offset=0'
     data = get_json(url)
+    if 'error' in data:
+        print "[" + str(datetime.now()) + "] " + data['error'] + "! Please report this to the Socorro team!"
+        quit()
     total = data['total']
     processed = 0
     rows = []
